@@ -24,7 +24,17 @@ class TestSSL < Test::Unit::TestCase
     assert last_response.ok?
   end
 
-  def test_allows_https_proxy_header_url
+  def test_allows_https_forwarded_ssl_header_url
+    get "http://example.org/", {}, 'HTTP_X_FORWARDED_SSL' => "on"
+    assert last_response.ok?
+  end
+
+  def test_allows_https_forwarded_scheme_header_url
+    get "http://example.org/", {}, 'HTTP_X_FORWARDED_SCHEME' => "https"
+    assert last_response.ok?
+  end
+
+  def test_allows_https_forwarded_proto_header_url
     get "http://example.org/", {}, 'HTTP_X_FORWARDED_PROTO' => "https"
     assert last_response.ok?
   end
